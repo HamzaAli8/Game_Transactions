@@ -15,7 +15,6 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
-
     @Autowired
     private final TransactionRepo transactionRepo;
 
@@ -36,14 +35,12 @@ public class TransactionService {
 
  // code formatting
     /**
-     * This a simple method that persists a transaction into a DB. It takes a transaction POJO as an argument. It returns
-     * a string to indicate if the method was successful and an error if it was not successful.
+     * This a simple method that persists a transaction into a DB. It takes a transaction POJO as an argument.
+     * It returns a transaction.
      * @param transaction
      * @return String
      */
     public Transaction saveTransaction(Transaction transaction){
-            List<Product> products = transaction.getProducts();
-            transaction.setProducts(products);
             return transactionRepo.save(transaction);
     }
 

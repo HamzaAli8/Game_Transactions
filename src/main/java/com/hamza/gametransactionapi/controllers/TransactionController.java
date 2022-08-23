@@ -34,25 +34,29 @@ public class TransactionController {
         try{
               savedTransaction = transactionService.saveTransaction(transaction);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.created(new URI("/transactions/" + savedTransaction.getTransactionId())).body(savedTransaction);
+        return ResponseEntity.created(new URI("/transactions/" +
+                savedTransaction.getTransactionId())).body(savedTransaction);
     }
 
 
 
     /**
-     * This endpoint returns all transactions, if no query parameters are entered. There are two optional parameters, greater
-     * which returns all transactions greater than a certain amount. Less returns all transaction less than a certain amount.
+     * This endpoint returns all transactions, if no query parameters are entered. There are two optional parameters,
+     * greater which returns all transactions greater than a certain amount. Less returns all transaction less than
+     * a certain amount.
      * @param less
      * @param greater
      * @return
      */
     @GetMapping
-    public ResponseEntity<?> getAllTransaction(@RequestParam Optional<BigDecimal> less, @RequestParam Optional<BigDecimal> greater){
+    public ResponseEntity<?> getAllTransaction(@RequestParam Optional<BigDecimal> less,
+                                               @RequestParam Optional<BigDecimal> greater){
         try {
             if (less.isPresent() && greater.isPresent()) {
-                throw new Exception("You can only search for greater than or less than");
+                return ResponseEntity.badRequest().body("You can only search for greater or less than");
             }
             if (less.isPresent()) {
                 List<Transaction> lessThan = transactionService.getTransactionsLessThan(less.get());
@@ -103,7 +107,7 @@ public class TransactionController {
     @DeleteMapping("/{transactionId}")
     public ResponseEntity<?> deleteTransactionById(@PathVariable Long transactionId){
         try {
-            String deleted = "Transaction with id: + " + transactionId + " has been deleted";
+            String deleted = "Transaction with id:  " + transactionId + " has been deleted";
             transactionService.deleteTransactionById(transactionId);
             return ResponseEntity.ok(deleted);
         } catch (Exception e) {

@@ -22,8 +22,9 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Long transactionId;
 
-    @OneToMany(mappedBy = "transaction", cascade=CascadeType.ALL)
-    private List<Product> products;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "user_id")
     private Long userId;

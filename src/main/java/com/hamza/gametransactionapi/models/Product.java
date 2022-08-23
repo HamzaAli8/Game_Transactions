@@ -1,8 +1,10 @@
 package com.hamza.gametransactionapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,8 +23,8 @@ public class Product {
     private String name;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name="transaction_id", insertable = false, updatable = false)
-    private Transaction transaction;
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private Set<Transaction> transactions;
 
 }
