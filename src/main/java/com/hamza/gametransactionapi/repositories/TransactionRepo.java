@@ -14,7 +14,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
     List<Optional<Transaction>> findByUserId(Long id);
 
-    ArrayList<Transaction>  findByAmountLessThan(BigDecimal amount);
+    ArrayList<Transaction> findByAmountLessThan(BigDecimal amount);
 
-    ArrayList<Transaction>  findByAmountGreaterThan(BigDecimal amount);
+    ArrayList<Transaction> findByAmountGreaterThan(BigDecimal amount);
 }
