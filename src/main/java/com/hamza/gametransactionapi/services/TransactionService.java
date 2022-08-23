@@ -1,6 +1,8 @@
 package com.hamza.gametransactionapi.services;
 
+import com.hamza.gametransactionapi.models.Product;
 import com.hamza.gametransactionapi.models.Transaction;
+import com.hamza.gametransactionapi.repositories.ProductRepo;
 import com.hamza.gametransactionapi.repositories.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,15 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
+
+    @Autowired
     private final TransactionRepo transactionRepo;
 
     public TransactionService(TransactionRepo transactionRepo) {
         this.transactionRepo = transactionRepo;
     }
+
+
 
 
     /**
@@ -36,6 +42,8 @@ public class TransactionService {
      * @return String
      */
     public Transaction saveTransaction(Transaction transaction){
+            List<Product> products = transaction.getProducts();
+            transaction.setProducts(products);
             return transactionRepo.save(transaction);
     }
 

@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,7 +22,8 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Long transactionId;
 
-    private String product;
+    @OneToMany(mappedBy = "transaction", cascade=CascadeType.ALL)
+    private List<Product> products;
 
     @Column(name = "user_id")
     private Long userId;
