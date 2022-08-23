@@ -4,41 +4,49 @@ import com.hamza.gametransactionapi.models.Transaction;
 import com.hamza.gametransactionapi.repositories.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
 
     private final TransactionRepo transactionRepo;
 
-    @Autowired
     public TransactionService(TransactionRepo transactionRepo) {
         this.transactionRepo = transactionRepo;
     }
 
 
+    /**
+     * This method returns a list of all the transactions that are found within the DB.
+     * @return List Transactions
+     */
     public List<Transaction> getAllTransactions(){
         return transactionRepo.findAll();
     }
 
-    public String saveTransaction(Transaction transaction){
-
-        try{
-            transactionRepo.save(transaction);
-            return "Saved transaction to database successfully!";
-        }catch (Exception e){
-
-            e.printStackTrace();
-            return "Error in saving the value";
-        }
-
+ // code formatting
+    /**
+     * This a simple method that persists a transaction into a DB. It takes a transaction POJO as an argument. It returns
+     * a string to indicate if the method was successful and an error if it was not successful.
+     * @param transaction
+     * @return String
+     */
+    public Transaction saveTransaction(Transaction transaction){
+            return transactionRepo.save(transaction);
     }
 
+    /**
+     * This method returns a list of all transactions which are less than a certain monetary amount. It takes amount as
+     * an argument and returns all relevant transactions.
+     * @param amount
+     * @return List of transactions
+     * @throws Exception
+     */
     public ArrayList<Transaction> getTransactionsLessThan(BigDecimal amount) throws Exception{
 
         ArrayList<Transaction> matchingTransactions = transactionRepo.findByAmountLessThan(amount);
@@ -49,7 +57,13 @@ public class TransactionService {
         return matchingTransactions;
     }
 
-
+    /**
+     * This method returns a list of all transactions which are more than a certain monetary amount. It takes amount as
+     * an argument and returns all relevant transactions.
+     * @param amount
+     * @return List of transactions
+     * @throws Exception
+     */
     public ArrayList<Transaction> getTransactionsMoreThan(BigDecimal amount) throws Exception{
 
         ArrayList<Transaction> matchingTransactions = transactionRepo.findByAmountGreaterThan(amount);
@@ -60,7 +74,13 @@ public class TransactionService {
         return matchingTransactions;
     }
 
-
+    /**
+     * This method finds and returns a unique transaction based on the transaction id. It takes transaction_id as an
+     * argument. If no transaction with the value exists an exception error is thrown.
+     * @param id
+     * @return Transaction
+     * @throws Exception
+     */
     public Transaction getTransactionById(Long id) throws Exception {
 
         Optional<Transaction> transactionOptional = transactionRepo.findById(id);
@@ -69,5 +89,22 @@ public class TransactionService {
             throw new Exception("No transaction with id: " + id + " found!!");
         }
         return transactionOptional.get();
+    }
+
+    /**
+     * This method finds and returns transaction(s) based on the user id. It takes user_id as an
+     * argument. If no transaction(s) with the value exists an exception error is thrown.
+     * @param id
+     * @return List of transactions
+     * @throws Exception
+     */
+    public List<Optional<Transaction>> getTransactionByUserId(Long id) throws Exception {
+
+        List<Optional<Transaction>> transactionOptional = transactionRepo.findByUserId(id);
+
+        if (transactionOptional.isEmpty()){
+            throw new Exception("No transaction with user_id: " + id + " found!!");
+        }
+        return transactionOptional.stream().collect(Collectors.toList());
     }
 }
