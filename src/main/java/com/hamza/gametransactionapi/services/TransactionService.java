@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -105,6 +104,10 @@ public class TransactionService {
         if (transactionOptional.isEmpty()){
             throw new Exception("No transaction with user_id: " + id + " found!!");
         }
-        return transactionOptional.stream().collect(Collectors.toList());
+        return new ArrayList<>(transactionOptional);
+    }
+
+    public void deleteTransactionById(Long id){
+        transactionRepo.deleteById(id);
     }
 }

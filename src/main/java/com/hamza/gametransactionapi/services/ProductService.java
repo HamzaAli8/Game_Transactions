@@ -1,4 +1,7 @@
-package com.hamza.gametransactionapi.services;
-
-public class ProductService {
-}
+//package com.hamza.gametransactionapi.services;
+//
+//import org.springframework.stereotype.Service;
+//
+//@Service
+//public class ProductService {
+//}

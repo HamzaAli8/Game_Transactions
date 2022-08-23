@@ -100,4 +100,21 @@ public class TransactionController {
         }
     }
 
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<?> deleteTransactionById(@PathVariable Long transactionId){
+        try {
+            String deleted = "Transaction with id: + " + transactionId + " has been deleted";
+            transactionService.deleteTransactionById(transactionId);
+            return ResponseEntity.ok(deleted);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
+
+
+
+    //Update method
+
 }
